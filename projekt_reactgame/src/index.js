@@ -3,41 +3,45 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {useState} from 'react';
 
-function GenerateArray(x, y) {
-  return Array(x).fill(0).map(row => new Array(y).fill(0))
+function Square(props) {
+  
+  return(
+    <div style={{color : "rgb("+props.x*10+","+props.y*10+","+"0"+")"}}>{props.x}|{props.y}</div>
+  )
 }
 
-function DisplayGrid(arr) {
-  for (let i of arr) {
-    for (let j of i) {
-      <div>{j}</div>
-    }
-    <br/>
-  }
-  return arr;
-}
 
 class Board extends React.Component{
-
-
-
   constructor(props) {
     super(props);
-    
+    const lx = 15, ly = 15;
+    const arr =Array(lx).fill(0).map((row,ri )=> new Array(ly).fill(0));
+    for (let x = 0; x < lx; x++) {
+      for (let y = 0; y < ly; y++) {
+        arr[x][y]= {x:x, y:y};
+      }
+    }
+    this.state = {
+      array : arr
+    }
   }
 
   render() {
-    const arr = GenerateArray(15,7);
     return (
+      
+      this.setState({array : this.state.array.map(obj => ((obj.x === 2 && obj.y=== 3) ? obj.x = 15 : obj ))});
+        
+
       <div className="board">
-        {arr.map((items, index)=>{
+        {this.state.array.map((items, index)=>{
           return(
             <div>
               {items.map((subItem, sIndex)=>{
-                return <div>{subItem}</div>;
+                return <Square key={subItem.x+"|"+
+                subItem.y} x={subItem.x} y={subItem.y}/>;
               })}
-              <br/>
             </div>
             
           );
