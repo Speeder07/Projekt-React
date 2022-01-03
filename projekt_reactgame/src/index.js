@@ -6,10 +6,13 @@ import reportWebVitals from './reportWebVitals';
 import {useState} from 'react';
 import Grain from './GrainGrow.js';
 
+let timer_scale = 1000;
+
 function Square(props) {
   
   return(
-    <div style={{backgroundColor : props.fraction.color}}></div>
+    <div key={props.x+"|"+props.y}
+     style={{backgroundColor : props.fraction.color}}>{props.x+"|"+props.y}</div>
   )
 }
 
@@ -28,15 +31,49 @@ class Fraction
   }
 }
 
-function Update() {
-  
+function IsFieldExist(arr, x, y) {
+  return arr[x][y] !== undefined;
 }
 
+function Rule01(array, sx, sy) {
+  let tab =new Array(0);
+  for (let x = sx-1; x <= sx+1; x++) {
+    for (let y = sy-1; y <= sy+1; y++) {
+      if (x == sx && y == sy) 
+        continue;
+      
+      if (array[x]===undefined  ) 
+        continue;
+      
+      if (array[x][y]===undefined) 
+        continue;
+
+        if (array[x][y].id > 0) {
+          let asigned = false;
+          tab.forEach(element => {
+            if (element.id === array[x][y].id) {
+              element = {id : element.id, count : element.count+1};
+              asigned = true;
+            }
+          });
+          if (!asigned) {
+            tab.push({id: array[x][y].id, count: 1})
+          }
+        }
+      
+    }
+  }
+  for (const element of tab) {
+    console.log(sx+" "+sy+"  "+ element.id +"|"+element.count);
+  }
+}
+
+
+const lx = 15, ly = 15;
 class Board extends React.Component{
   
   constructor(props) {
     super(props);
-    const lx = 15, ly = 15;
     const arr =Array(lx).fill(0).map((row,ri )=> new Array(ly).fill(0));
     for (let x = 0; x < lx; x++) {
       for (let y = 0; y < ly; y++) {
@@ -46,12 +83,29 @@ class Board extends React.Component{
     this.state = {
       array : arr
     }
+    this.Update = this.Update.bind(this);
+
+  }
+
+  Update(i) {
+    
+    for (let x = 0; x < lx; x++) {
+      for (let y = 0; y < ly; y++) {
+        if (this.state.array[x][y].id==0) {
+          Rule01(this.state.array, x, y);
+        }
+      }
+    }
+    i++;
+    setTimeout(this.Update, timer_scale, i);
+  }
+
+  componentDidMount() {
     let temp = AlterTable(this.state.array, 5,5, new Fraction("#ccc", 1));
     this.setState({array : temp,});
     let temp2 = AlterTable(this.state.array, 2,7, new Fraction("#f5c6a9", 2));
     this.setState({array : temp2,});
-
-
+    this.Update(1);
   }
 
   render() {
@@ -60,10 +114,9 @@ class Board extends React.Component{
       <div className="board">
         {this.state.array.map((items, index)=>{
           return(
-            <div>
+            <div key={index}>
               {items.map((subItem, sIndex)=>{
-                return <Square key={subItem.x+"|"+
-                subItem.y} x={index} y={sIndex} fraction={subItem} />;
+                return <Square x={index} y={sIndex} fraction={subItem} />;
               })}
             </div>
             
