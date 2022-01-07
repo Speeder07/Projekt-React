@@ -5,8 +5,11 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {useState} from 'react';
 import Grain from './GrainGrow.js';
+import * as Fr from './Fractions';
+import * as GG from './GrainGrow';
 
-let timer_scale = 1000;
+
+let timer_scale = 100;
 
 function Square(props) {
   
@@ -22,54 +25,16 @@ function AlterTable(arr, x, y, content) {
 }
 
 
-class Fraction
-{
-  constructor(color, id)
-  {
-    this.color = color;
-    this.id = id;
-  }
-}
+
 
 function IsFieldExist(arr, x, y) {
   return arr[x][y] !== undefined;
 }
 
-function Rule01(array, sx, sy) {
-  let tab =new Array(0);
-  for (let x = sx-1; x <= sx+1; x++) {
-    for (let y = sy-1; y <= sy+1; y++) {
-      if (x == sx && y == sy) 
-        continue;
-      
-      if (array[x]===undefined  ) 
-        continue;
-      
-      if (array[x][y]===undefined) 
-        continue;
-
-        if (array[x][y].id > 0) {
-          let asigned = false;
-          tab.forEach(element => {
-            if (element.id === array[x][y].id) {
-              element = {id : element.id, count : element.count+1};
-              asigned = true;
-            }
-          });
-          if (!asigned) {
-            tab.push({id: array[x][y].id, count: 1})
-          }
-        }
-      
-    }
-  }
-  for (const element of tab) {
-    console.log(sx+" "+sy+"  "+ element.id +"|"+element.count);
-  }
-}
 
 
-const lx = 15, ly = 15;
+
+const lx = 20, ly = 20;
 class Board extends React.Component{
   
   constructor(props) {
@@ -77,7 +42,7 @@ class Board extends React.Component{
     const arr =Array(lx).fill(0).map((row,ri )=> new Array(ly).fill(0));
     for (let x = 0; x < lx; x++) {
       for (let y = 0; y < ly; y++) {
-        arr[x][y]= new Fraction("#fff", 0);
+        arr[x][y]= Fr.fr_blank;
       }
     }
     this.state = {
@@ -88,30 +53,42 @@ class Board extends React.Component{
   }
 
   Update(i) {
-    
+    let temp_array =JSON.parse(JSON.stringify(this.state.array));
+
     for (let x = 0; x < lx; x++) {
       for (let y = 0; y < ly; y++) {
         if (this.state.array[x][y].id==0) {
-          Rule01(this.state.array, x, y);
+          if (!GG.Rule01(this.state.array,temp_array, x, y)) 
+            if (!GG.Rule02(this.state.array,temp_array, x, y))  
+              if (!GG.Rule03(this.state.array,temp_array, x, y))  
+                GG.Rule04(this.state.array,temp_array, x, y);
         }
       }
     }
+    this.setState({array : temp_array,});
+
+
     i++;
     setTimeout(this.Update, timer_scale, i);
   }
 
   componentDidMount() {
-    let temp = AlterTable(this.state.array, 5,5, new Fraction("#ccc", 1));
+    let temp = AlterTable(this.state.array, 5,5, Fr.fr_one);
     this.setState({array : temp,});
-    let temp2 = AlterTable(this.state.array, 2,7, new Fraction("#f5c6a9", 2));
+    let temp2 = AlterTable(this.state.array, 2,10, Fr.fr_two);
     this.setState({array : temp2,});
-    this.Update(1);
+    let temp3 = AlterTable(this.state.array, 16,15, Fr.fr_three);
+    this.setState({array : temp3,});
+    setTimeout(this.Update, timer_scale, 1);
   }
+
+
 
   render() {
     
+
     return (
-      <div className="board">
+      <div id="board" /*style={{ gridtemplatecolumns: "repeat("+lx+", 40px)" }}*/>
         {this.state.array.map((items, index)=>{
           return(
             <div key={index}>
