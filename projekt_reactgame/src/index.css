@@ -19,9 +19,14 @@ code {
 #root {
   height: 100vh;
   width: 100vw;
+}
+
+.position {
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 100vh;
+  width: 100vw;
 }
 
 #board {
@@ -50,4 +55,64 @@ button {
   background-color: #fff;
   border: none;
   cursor: pointer;
+}
+
+#pallete {
+  position: absolute;
+  width: 15vw;
+  height: 70vh;
+  top: 2.5vh;
+  transform: translateX(-100%);
+  background-color: #4361ee;
+  transition: 0.5s transform ease-in-out;
+  border-end-end-radius: 15px;
+  border-start-end-radius: 15px;
+}
+
+#pallete.show {
+  transform: translateX(0);
+}
+
+.showbutton_pallete {
+  position: absolute;
+  width: 20px;
+  height: 7vh;
+  top: 5vh;
+  right: 0;
+  transform: translateX(100%);
+  background-color: #4cc9f0;
+  transition: 0.5s transform ease-in-out;
+  cursor: pointer;
+  border-end-end-radius: 10px;
+  border-start-end-radius: 10px;
+}
+
+#timer {
+  position: absolute;
+  width: 15vw;
+  height: 12vh;
+  right: 20px;
+  transform: translateY(-100%);
+  background-color: #560bad;
+  transition: 0.5s transform ease-in-out;
+  border-end-start-radius: 15px;
+  border-end-end-radius: 15px;
+}
+
+#timer.show {
+  transform: translateX(0);
+}
+
+.showbutton_timer {
+  position: absolute;
+  width: 5vw;
+  height: 20px;
+  bottom: 0;
+  left: 30px;
+  transform: translateY(100%);
+  background-color: #f72585;
+  transition: 0.5s transform ease-in-out;
+  cursor: pointer;
+  border-end-start-radius: 10px;
+  border-end-end-radius: 10px;
 }

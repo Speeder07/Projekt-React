@@ -88,21 +88,60 @@ class Board extends React.Component{
     
 
     return (
-      <div id="board" /*style={{ gridtemplatecolumns: "repeat("+lx+", 40px)" }}*/>
-        {this.state.array.map((items, index)=>{
-          return(
-            <div key={index}>
-              {items.map((subItem, sIndex)=>{
-                return <Square x={index} y={sIndex} fraction={subItem} />;
-              })}
-            </div>
-            
-          );
-        })}
+      <div>
+        <Pallete/>
+        <Timer/>
+      
+        <div className='position'>
+          <div id="board" /*style={{ gridtemplatecolumns: "repeat("+lx+", 40px)" }}*/>
+            {this.state.array.map((items, index)=>{
+              return(
+                <div key={index}>
+                  {items.map((subItem, sIndex)=>{
+                    return <Square x={index} y={sIndex} fraction={subItem} />;
+                  })}
+                </div>
+                
+              );
+            })}
+          </div>
+        </div>
       </div>
     );
   }
 }
+
+
+function Pallete(params) {
+  
+  
+  function toggle() {
+    document.getElementById('pallete').classList.toggle('show');
+    console.log("toggle");
+  }
+  
+  return(
+    <div id='pallete'>
+      <button className='showbutton_pallete' onClick={toggle}>{'>'}</button>
+    </div>
+  );
+}
+
+function Timer(params) {
+  
+  
+  function toggle() {
+    document.getElementById('timer').classList.toggle('show');
+    console.log("toggle");
+  }
+  
+  return(
+    <div id='timer'>
+      <button className='showbutton_timer' onClick={toggle}>{'^'}</button>
+    </div>
+  );
+}
+
 
 ReactDOM.render(
   <Board/>,
