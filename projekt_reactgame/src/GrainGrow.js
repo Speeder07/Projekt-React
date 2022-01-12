@@ -1,4 +1,5 @@
 import * as Fr from './Fractions';
+import * as Ix from './Pallete';
 
 class Counter
 {
@@ -187,7 +188,7 @@ export function Rule04(array, temp_array, sx, sy) {
             max = element;
           }
         }
-        if (Math.floor(Math.random() * 101) <= 20 ) {
+        if (Math.floor(Math.random() * 101) <= Ix.GlobalRandom) {
             temp_array[sx][sy] = max.fraction;
         }
     }
