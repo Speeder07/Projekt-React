@@ -1,7 +1,6 @@
 import * as Fr from './Fractions';
 import {useState} from 'react';
 export let GlobalRandom = 50;
-
 export function Pallete(params) {
 
     const [Fract_first, setFract_first] = useState(()=>{return Fr.fr_blank});
@@ -32,6 +31,18 @@ export function Pallete(params) {
       params.onChangeBrush(temp);
       setbrush(temp);
     }
+
+    function OnGenerate(e) {
+      e.preventDefault();
+      let x = document.getElementById('input_x').value;
+      let y = document.getElementById('input_y').value;
+      params.onGenerate(x, y)
+    }
+
+    function OnChanceChange(e) {
+      e.preventDefault();
+      GlobalRandom = document.getElementById('chance_input').value;
+    }
     
   
     let color = Fract_first.color;
@@ -47,6 +58,23 @@ export function Pallete(params) {
           <button onClick={()=>params.onPallete(Fr.fr_fast)} className='pallete_button'>Speed</button>
           <button onClick={ChangeBrush} className='pallete_button'>Brush</button>
           <div>{(brush==0)?"S":(brush==1)?"M":"H"}</div>
+          <button onClick={()=>params.onPallete(Fr.fr_blank)} className='pallete_button'>Eraser</button>
+          <div></div>
+          <div>
+            <input id='input_x' min={1} type={Number} ></input>
+            <input id='input_y' min={1} type={Number} ></input>
+          </div>
+          <button onClick={OnGenerate} className='pallete_button'>Generate</button>
+          <div>
+            <input id='chance_input' min={0} max={100} type={Number}></input>
+          </div>
+          <button onClick={OnChanceChange} className='pallete_button'>%</button>
+          <div>
+          <input></input>
+          </div>
+          <button onClick={()=>params.onPallete(Fr.fr_blank)} className='pallete_button'>F</button>
+          <button onClick={()=>params.onPallete(Fr.fr_blank)} className='pallete_button'>#</button>
+          <button onClick={()=>params.onPallete(Fr.fr_blank)} className='pallete_button'>I</button>
         </div>
         <ColorPicker colorUpdate={ColorUpdate} />
       </div>

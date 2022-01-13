@@ -11,7 +11,8 @@ import * as Pl from './Pallete';
 
 let timer_scale = 1000;
 let ismousedown = false;
-
+let size_x = 20, size_y = 20;
+let interval;
 
 function Square(props) {
   
@@ -25,7 +26,6 @@ function Square(props) {
     {
       ismousedown = false;
     }
-    console.log(ismousedown);
     Send();
   }
 
@@ -46,6 +46,15 @@ function AlterTable(arr, x, y, content) {
   return arr;
 }
 
+function makeArray(a,b) {
+  var arr = new Array(size_x)
+  for(var i = 0;i<a;i++)
+  {
+    arr[i] = new Array(size_y);
+    arr[i].fill(Fr.fr_blank)
+  }
+  return arr
+}
 
 
 
@@ -56,19 +65,14 @@ function IsFieldExist(arr, x, y) {
 
 
 
-const lx = 20, ly = 20;
+
 class GameMenager extends React.Component{
   
   
 
   constructor(props) {
     super(props);
-    const arr =Array(lx).fill(0).map((row,ri )=> new Array(ly).fill(0));
-    for (let x = 0; x < lx; x++) {
-      for (let y = 0; y < ly; y++) {
-        arr[x][y]= Fr.fr_blank;
-      }
-    }
+    const arr = makeArray(size_x, size_y);
 
     this.state = {
       array : arr,
@@ -81,7 +85,8 @@ class GameMenager extends React.Component{
     this.onPallete = this.onPallete.bind(this);
     this.Reset = this.Reset.bind(this);
     this.ChangeBrush = this.ChangeBrush.bind(this);
-    
+    this.onGenerate = this.onGenerate.bind(this);
+
     this.brushM = [
       [false, true, false],
       [true, true, true],
@@ -98,11 +103,17 @@ class GameMenager extends React.Component{
   }
 
 
-  Update(i) {
+  Update() {
     let temp_array =JSON.parse(JSON.stringify(this.state.array));
 
-    for (let x = 0; x < lx; x++) {
-      for (let y = 0; y < ly; y++) {
+    for (let x = 0; x < size_x; x++) {
+      for (let y = 0; y < size_y; y++) {
+        if (this.state.array[x]===undefined) 
+          continue;
+        
+        if (this.state.array[x][y]===undefined) 
+          continue;
+
         if (this.state.array[x][y].id<=0&&this.state.array[x][y].id!=-1) {
           if (!GG.Rule01(this.state.array,temp_array, x, y)) 
             if (!GG.Rule02(this.state.array,temp_array, x, y))  
@@ -112,19 +123,30 @@ class GameMenager extends React.Component{
       }
     }
     this.setState({array : temp_array,});
-    i++;
-    setTimeout(this.Update, timer_scale, i);
+  }
+
+  onGenerate(nx, ny)
+  {
+    
+    clearInterval(interval);
+    size_x=nx;
+    size_y=ny;
+    const arr = makeArray(nx, size_y);
+    this.setState({array : arr,});
+    this.SetInterval();
+    
+  }
+
+  SetInterval()
+  {
+    interval = setInterval(this.Update, timer_scale);
   }
 
   componentDidMount() {
-    setTimeout(this.Update, timer_scale, 1);
+    interval = setInterval(this.Update, timer_scale);
   }
 
-  onPallete(frac)
-  {
-    console.log(frac);
-    this.setState({Selected_Fraction : frac,});
-  }
+  onPallete(frac){this.setState({Selected_Fraction : frac,});}
 
   onTimer(value)
   {
@@ -133,15 +155,10 @@ class GameMenager extends React.Component{
 
   Reset()
   {
-    const arr =Array(lx).fill(0).map((row,ri )=> new Array(ly).fill(0));
-    for (let x = 0; x < lx; x++) {
-      for (let y = 0; y < ly; y++) {
-        arr[x][y]= Fr.fr_blank;
-      }
-    }
-
+    const arr = makeArray(size_x, size_y);
     this.setState({array : arr,});
   }
+
 
   Start()
   {
@@ -207,18 +224,17 @@ class GameMenager extends React.Component{
   }
 
   render() {
-    
 
     return (
       <div>
-        <Pl.Pallete onPallete = {this.onPallete} onChangeBrush={this.ChangeBrush}/>
+        <Pl.Pallete onPallete = {this.onPallete} onChangeBrush={this.ChangeBrush} onGenerate={this.onGenerate}/>
         <Timer onChange={this.onPallete} onStart={this.Start} onReset={this.Reset} onPause={this.Pause}/>
       
         <div className='position'>
-          <div id="board" onMouseLeave={()=>ismousedown=false}>
+          <div id="board" onMouseLeave={()=>ismousedown=false} style={{gridTemplateColumns: 'repeat('+size_x+', 1fr'}}>
             {this.state.array.map((items, index)=>{
               return(
-                <div key={index}>
+                <div key={index} style={{gridTemplateRows: 'repeat('+size_y+', 1fr)'}}>
                   {items.map((subItem, sIndex)=>{
                     return <Square onClick_Grid={this.onClick_Grid} x={index} y={sIndex} fraction={subItem} />;
                   })}
