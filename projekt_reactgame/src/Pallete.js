@@ -1,9 +1,12 @@
 import * as Fr from './Fractions';
 import {useState} from 'react';
+import flag_img from './images/flag.svg';
+import mountain_img from './images/mountain.svg';
+import slow_img from './images/slow.svg';
+import speed_img from './images/speed.svg';
+import brush_img from './images/brush.svg';
+import eraser_img from './images/eraser.svg';
 export let GlobalRandom = 50;
-export let slow_chance = 20;
-export let fast_chance = 80;
-
 export function Pallete(params) {
 
     const [Fract_first, setFract_first] = useState(()=>{return Fr.fr_blank});
@@ -39,8 +42,6 @@ export function Pallete(params) {
       e.preventDefault();
       let x = document.getElementById('input_x').value;
       let y = document.getElementById('input_y').value;
-      x = (x<1)?1:x;
-      y = (y<1)?1:y;
       params.onGenerate(x, y)
     }
 
@@ -62,22 +63,19 @@ export function Pallete(params) {
         <button className='showbutton_pallete' onClick={() => toggle('pallete')}>{'>'}</button>
         
         <div className='pallete_container'>
-          <button style={{backgroundColor : color}} className='frac_button' onClick={()=> {toggle('colorPicker'); params.onPallete(Fract_first);}}>Fraction</button>
-          <button onClick={()=>params.onPallete(Fr.fr_black)} className='barrier_button'>Barier</button>
-          <button onClick={()=>params.onPallete(Fr.fr_slow)} className='slow_button'>Slow</button>
-          <button onClick={()=>params.onPallete(Fr.fr_fast)} className='speed_button'>Speed</button>
-          <button onClick={ChangeBrush} className='brush_button'>Brush</button>
-          <div className='brush_display'>{(brush==0)?"S":(brush==1)?"M":"H"}</div>
-          <button onClick={()=>params.onPallete(Fr.fr_blank)} className='eraser_button'>Eraser</button>
+          <button style={{backgroundColor : color}} className='pallete_button' onClick={()=> {toggle('colorPicker')}}><img src={flag_img} height="30px" width="30px"/></button>
+          <button onClick={()=>params.onPallete(Fr.fr_black)} className='pallete_button'><img src={mountain_img} height="30px" width="30px"/></button>
+          <button onClick={()=>params.onPallete(Fr.fr_slow)} className='pallete_button'><img src={slow_img} height="30px" width="30px"/></button>
+          <button onClick={()=>params.onPallete(Fr.fr_fast)} className='pallete_button'><img src={speed_img} height="30px" width="30px"/></button>
+          <button onClick={ChangeBrush} className='pallete_button'><img src={brush_img} height="30px" width="30px"/></button>
+          <div>{(brush==0)?"S":(brush==1)?"M":"H"}</div>
+          <button onClick={()=>params.onPallete(Fr.fr_blank)} className='pallete_button'><img src={eraser_img} height="30px" width="30px"/></button>
           <div></div>
-          <form className='world_generator' onSubmit={OnGenerate}>
-            <div className='generate_div'>
-              <input className='world_gen_input' id='input_x' min="1" type="Number" ></input>
-              <input className='world_gen_input' id='input_y' min="1" type="Number" ></input>
-            </div>
-            <button type='submit' className='world_generator_button'>Generate</button>
-          </form>
-          
+          <div>
+            <input id='input_x' min={1} type={Number} ></input>
+            <input id='input_y' min={1} type={Number} ></input>
+          </div>
+          <button onClick={OnGenerate} className='pallete_button'>Generate</button>
           <div>
             <input id='chance_input' min={0} max={100} type={Number}></input>
           </div>
