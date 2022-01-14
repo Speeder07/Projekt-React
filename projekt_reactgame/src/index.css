@@ -9,6 +9,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #373737ff;
 }
 
 code {
@@ -34,7 +35,6 @@ code {
   width: 90vw;
   height: 90vh;
   align-items: center;
-  border: black 5px solid;
 }
 
 #board > div {
@@ -46,15 +46,7 @@ code {
   text-align: center;
 }
 
-.blue {
-  color: blue;
-}
-.red {
-  color: red;
-}
-
 button {
-  background-color: #fff;
   border: none;
   cursor: pointer;
 }
@@ -65,7 +57,6 @@ button {
   height: 70vh;
   top: 2.5vh;
   transform: translateX(-100%);
-
   transition: 0.5s transform ease-in-out;
 }
 
@@ -97,12 +88,43 @@ button {
   position: relative;
   border-end-end-radius: 15px;
   border-start-end-radius: 15px;
-  background-color: #4361ee;
+  background-color: #141414ff;
 }
 
 .pallete_button {
   background-color: rgba(255, 255, 255, 0);
   margin: 15px 20px 15px 20px;
+}
+
+.frac_button,
+.barrier_button,
+.slow_button,
+.speed_button,
+.eraser_button,
+.brush_button,
+.brush_display,
+.eraser_button,
+.world_generator_button {
+  background-color: rgba(255, 255, 255, 0) !important;
+  color: white;
+}
+
+.world_generator {
+  grid-column: span 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.world_gen_input {
+  background-color: rgba(255, 255, 255, 0);
+  border: none;
+}
+
+.generate_div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 #colorPicker {
