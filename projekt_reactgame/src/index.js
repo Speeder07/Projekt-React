@@ -46,12 +46,17 @@ function AlterTable(arr, x, y, content) {
   return arr;
 }
 
-function makeArray(a,b) {
-  var arr = new Array(size_x)
-  for(var i = 0;i<a;i++)
+function makeArray() {
+  var arr = new Array(size_x);
+  for(var i = 0;i<size_x;i++)
   {
-    arr[i] = new Array(size_y);
-    arr[i].fill(Fr.fr_blank)
+    
+    var temp = [];
+    for(var j = 0;j<size_y;j++)
+    {
+      temp.push(Fr.fr_blank);
+    }
+    arr[i]=temp;
   }
   return arr
 }
@@ -77,7 +82,8 @@ class GameMenager extends React.Component{
     this.state = {
       array : arr,
       Selected_Fraction : null,
-      brush: 0
+      brush : 0,
+      grid : false
     }
 
     this.onClick_Grid = this.onClick_Grid.bind(this);
@@ -223,11 +229,16 @@ class GameMenager extends React.Component{
     this.setState({brush: brush,});
   }
 
+  ChangeGrid()
+  {
+    this.setState({grid: !this.state.grid,});
+  }
+
   render() {
 
     return (
       <div>
-        <Pl.Pallete onPallete = {this.onPallete} onChangeBrush={this.ChangeBrush} onGenerate={this.onGenerate}/>
+        <Pl.Pallete onPallete = {this.onPallete} onChangeBrush={this.ChangeBrush} onGenerate={this.onGenerate} onGrid={this.ChangeGrid}/>
         <Timer onChange={this.onPallete} onStart={this.Start} onReset={this.Reset} onPause={this.Pause}/>
       
         <div className='position'>
@@ -236,7 +247,7 @@ class GameMenager extends React.Component{
               return(
                 <div key={index} style={{gridTemplateRows: 'repeat('+size_y+', 1fr)'}}>
                   {items.map((subItem, sIndex)=>{
-                    return <Square onClick_Grid={this.onClick_Grid} x={index} y={sIndex} fraction={subItem} />;
+                    return <Square onClick_Grid={this.onClick_Grid} x={index} y={sIndex} fraction={subItem} grid={this.state.grid}/>;
                   })}
                 </div>
                 

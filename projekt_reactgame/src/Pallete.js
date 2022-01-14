@@ -43,6 +43,11 @@ export function Pallete(params) {
       e.preventDefault();
       GlobalRandom = document.getElementById('chance_input').value;
     }
+
+    function OnGrid(e) {
+      e.preventDefault();
+      params.OnGrid();
+    }
     
   
     let color = Fract_first.color;
