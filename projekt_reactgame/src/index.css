@@ -9,7 +9,6 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #373737ff;
 }
 
 code {
@@ -30,11 +29,12 @@ code {
   width: 100vw;
 }
 
-#board {
-  display: grid;
-  width: 90vw;
-  height: 90vh;
-  align-items: center;
+#board {	
+  display: grid;	
+  width: 90vw;	
+  height: 90vh;	
+  align-items: center;	
+  border: black 5px solid;	
 }
 
 #board > div {
@@ -44,6 +44,13 @@ code {
 
 #board > div > div {
   text-align: center;
+}
+
+.blue {
+  color: blue;
+}
+.red {
+  color: red;
 }
 
 button {
@@ -57,6 +64,7 @@ button {
   height: 70vh;
   top: 2.5vh;
   transform: translateX(-100%);
+
   transition: 0.5s transform ease-in-out;
 }
 
@@ -88,43 +96,12 @@ button {
   position: relative;
   border-end-end-radius: 15px;
   border-start-end-radius: 15px;
-  background-color: #141414ff;
+  background-color: #4361ee;
 }
 
 .pallete_button {
   background-color: rgba(255, 255, 255, 0);
   margin: 15px 20px 15px 20px;
-}
-
-.frac_button,
-.barrier_button,
-.slow_button,
-.speed_button,
-.eraser_button,
-.brush_button,
-.brush_display,
-.eraser_button,
-.world_generator_button {
-  background-color: rgba(255, 255, 255, 0) !important;
-  color: white;
-}
-
-.world_generator {
-  grid-column: span 2;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
-
-.world_gen_input {
-  background-color: rgba(255, 255, 255, 0);
-  border: none;
-}
-
-.generate_div {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
 }
 
 #colorPicker {
@@ -152,11 +129,11 @@ button {
 
 #timer {
   position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex;	
+  align-items: center;	
+  justify-content: center;	
   gap: 20px;
-  width: 15vw;
+  width: 20vw;
   height: 12vh;
   right: 20px;
   transform: translateY(-100%);
@@ -186,6 +163,7 @@ button {
 
 #on {
   display: none;
+  background-color: inherit;
 }
 
 #on.show {
@@ -194,8 +172,28 @@ button {
 
 #off {
   display: none;
+  background-color: inherit;
 }
 
 #off.show {
   display: block;
+}
+
+#reset {
+  background-color: inherit;
+  float: left;
+}
+
+.square {
+  border: 1px solid #000;
+}
+
+#speed_display {
+  border-radius: 10px;
+  width: 30px;
+  text-align: center;
+}
+
+footer {
+  font-size: small;
 }
