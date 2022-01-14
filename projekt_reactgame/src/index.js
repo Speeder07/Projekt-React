@@ -7,12 +7,16 @@ import Grain from './GrainGrow.js';
 import * as Fr from './Fractions';
 import * as GG from './GrainGrow';
 import * as Pl from './Pallete';
+import play_img from './images/play.svg';
+import pause_img from './images/pause.svg';
+import reset_img from './images/reset.svg';
 
 
 let timer_scale = 1000;
 let ismousedown = false;
 let size_x = 20, size_y = 20;
-let interval;
+let interval;	
+let paused = true;
 
 function Square(props) {
   
@@ -36,7 +40,7 @@ function Square(props) {
   }
 
   return(
-    <div key={props.x+"|"+props.y}
+    <div className="square" key={props.x+"|"+props.y}
      style={{backgroundColor : props.fraction.color}} onMouseEnter={Send} onMouseUp={OmMoseDown} onMouseDown={OmMoseDown}></div>
   )
 }
@@ -46,32 +50,27 @@ function AlterTable(arr, x, y, content) {
   return arr;
 }
 
-function makeArray() {
-  var arr = new Array(size_x);
-  for(var i = 0;i<size_x;i++)
-  {
-    
-    var temp = [];
-    for(var j = 0;j<size_y;j++)
-    {
-      temp.push(Fr.fr_blank);
-    }
-    arr[i]=temp;
-  }
-  return arr
+function makeArray() {	
+  var arr = new Array(size_x);	
+  for(var i = 0;i<size_x;i++)	
+  {	
+    	
+    var temp = [];	
+    for(var j = 0;j<size_y;j++)	
+    {	
+      temp.push(Fr.fr_blank);	
+    }	
+    arr[i]=temp;	
+  }	
+  return arr	
 }
-
-
 
 function IsFieldExist(arr, x, y) {
   return arr[x][y] !== undefined;
 }
 
 
-
-
-
-class GameMenager extends React.Component{
+class GameManager extends React.Component{
   
   
 
@@ -82,7 +81,7 @@ class GameMenager extends React.Component{
     this.state = {
       array : arr,
       Selected_Fraction : null,
-      brush : 0,
+      brush : 0,	
       grid : false
     }
 
@@ -90,9 +89,10 @@ class GameMenager extends React.Component{
     this.Update = this.Update.bind(this);
     this.onPallete = this.onPallete.bind(this);
     this.Reset = this.Reset.bind(this);
+
     this.ChangeBrush = this.ChangeBrush.bind(this);
     this.onGenerate = this.onGenerate.bind(this);
-
+    
     this.brushM = [
       [false, true, false],
       [true, true, true],
@@ -112,49 +112,52 @@ class GameMenager extends React.Component{
   Update() {
     let temp_array =JSON.parse(JSON.stringify(this.state.array));
 
-    for (let x = 0; x < size_x; x++) {
-      for (let y = 0; y < size_y; y++) {
-        if (this.state.array[x]===undefined) 
-          continue;
-        
-        if (this.state.array[x][y]===undefined) 
-          continue;
-
-        if (this.state.array[x][y].id<=0&&this.state.array[x][y].id!=-1) {
-          if (!GG.Rule01(this.state.array,temp_array, x, y)) 
-            if (!GG.Rule02(this.state.array,temp_array, x, y))  
-              if (!GG.Rule03(this.state.array,temp_array, x, y))  
-                GG.Rule04(this.state.array,temp_array, x, y);
-        }
+    if(!paused)
+    {
+      for (let x = 0; x < size_x; x++) {	
+        for (let y = 0; y < size_y; y++) {	
+          if (this.state.array[x]===undefined) 	
+            continue;	
+            
+          if (this.state.array[x][y]===undefined) 	
+            continue;	
+          if (this.state.array[x][y].id<=0&&this.state.array[x][y].id!=-1) {	
+            if (!GG.Rule01(this.state.array,temp_array, x, y)) 	
+              if (!GG.Rule02(this.state.array,temp_array, x, y))  	
+                if (!GG.Rule03(this.state.array,temp_array, x, y))  	
+                  GG.Rule04(this.state.array,temp_array, x, y);	
+          }	
+        }	
       }
+      this.setState({array : temp_array,});
     }
-    this.setState({array : temp_array,});
   }
 
-  onGenerate(nx, ny)
+  componentDidMount() 
   {
-    
-    clearInterval(interval);
-    size_x=nx;
-    size_y=ny;
-    const arr = makeArray(nx, size_y);
-    this.setState({array : arr,});
     this.SetInterval();
-    
   }
 
-  SetInterval()
-  {
-    interval = setInterval(this.Update, timer_scale);
-  }
+  onGenerate(nx, ny)	
+  {	
+    	
+    clearInterval(interval);	
+    size_x=nx;	
+    size_y=ny;	
+    const arr = makeArray(nx, size_y);	
+    this.setState({array : arr,});	
+    this.SetInterval();	
+    	
+  }	
 
-  componentDidMount() {
-    interval = setInterval(this.Update, timer_scale);
-  }
+  SetInterval()	
+  {	
+    interval = setInterval(this.Update, timer_scale);	
+  }	
 
   onPallete(frac){this.setState({Selected_Fraction : frac,});}
 
-  onTimer(value)
+  onTimer(value) 
   {
     console.log(value);
   }
@@ -165,19 +168,27 @@ class GameMenager extends React.Component{
     this.setState({array : arr,});
   }
 
-
   Start()
   {
-    console.log("start");
+    paused = false;
+    console.log("Started");
   }
 
   Pause()
   {
-    console.log("pause");
+    paused = true;
+    console.log("Paused");
   }
 
-  
-  onClick_Grid(x, y) {
+  Change(input)
+  {
+    timer_scale = input * 1000;
+    clearInterval(interval);
+    this.SetInterval();
+  }
+
+  onClick_Grid(x, y) 
+  {
     
 
     if (ismousedown){
@@ -229,17 +240,17 @@ class GameMenager extends React.Component{
     this.setState({brush: brush,});
   }
 
-  ChangeGrid()
-  {
-    this.setState({grid: !this.state.grid,});
+  ChangeGrid()	
+  {	
+    this.setState({grid: !this.state.grid,});	
   }
 
-  render() {
-
+  render() 
+  {
     return (
       <div>
         <Pl.Pallete onPallete = {this.onPallete} onChangeBrush={this.ChangeBrush} onGenerate={this.onGenerate} onGrid={this.ChangeGrid}/>
-        <Timer onChange={this.onPallete} onStart={this.Start} onReset={this.Reset} onPause={this.Pause}/>
+        <Timer onChange={this.Change} onStart={this.Start} onReset={this.Reset} onPause={this.Pause}/>
       
         <div className='position'>
           <div id="board" onMouseLeave={()=>ismousedown=false} style={{gridTemplateColumns: 'repeat('+size_x+', 1fr'}}>
@@ -255,18 +266,15 @@ class GameMenager extends React.Component{
             })}
           </div>
         </div>
+        <footer>Użyte ikony są ze strony Font Awesome, licencja: https://fontawesome.com/license</footer>
       </div>
     );
   }
 }
 
 
-
-
-
-
-function Timer(params) {
-  
+function Timer(params) 
+{
   let pause = true;
   let slide = 1;
   
@@ -302,17 +310,18 @@ function Timer(params) {
   return(
     <div id='timer'>
       <button className='showbutton_timer' onClick={toggle}>{'^'}</button>
-      <button onClick={Reset}>{'R'}</button>
-      <button id='on' className='show' onClick={Start}>{'S'}</button>
-      <button id='off' onClick={Pause}>{'P'}</button>
-      <input onChange={Change} type="range" min="1" max="100" className="slider" id="myRange"></input>
+      <button id='reset' onClick={Reset}><img height="20px" width="20px" src={reset_img}/></button>
+      <button id='on' className='show' onClick={Start}><img height="20px" width="20px" src={play_img}/></button>
+      <button id='off' onClick={Pause}><img height="20px" width="20px" src={pause_img}/></button>
+      <input onChange={Change} type="range" min="0.1" max="5" step="0.1" defaultValue="1" className="slider" id="myRange"></input>
+      <input id="speed_display" value={timer_scale/1000} type="text" readOnly></input>
     </div>
   );
 }
 
 
 ReactDOM.render(
-  <GameMenager/>,
+  <GameManager/>,
   document.getElementById('root')
 );
 
