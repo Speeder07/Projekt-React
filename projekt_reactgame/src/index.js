@@ -183,8 +183,8 @@ class GameManager extends React.Component{
   Change(input)
   {
     timer_scale = input * 1000;
-    clearInterval(interval);
-    this.SetInterval();
+    /*clearInterval(interval);
+    this.SetInterval();*/
   }
 
   onClick_Grid(x, y) 
