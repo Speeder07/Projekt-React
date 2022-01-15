@@ -10,7 +10,7 @@ import * as Pl from './Pallete';
 import play_img from './images/play.svg';
 import pause_img from './images/pause.svg';
 import reset_img from './images/reset.svg';
-
+export let slow_fast = null;
 
 let timer_scale = 1000;
 let ismousedown = false;
@@ -121,11 +121,35 @@ class GameManager extends React.Component{
             
           if (this.state.array[x][y]===undefined) 	
             continue;	
-          if (this.state.array[x][y].id<=0&&this.state.array[x][y].id!=-1) {	
-            if (!GG.Rule01(this.state.array,temp_array, x, y)) 	
-              if (!GG.Rule02(this.state.array,temp_array, x, y))  	
-                if (!GG.Rule03(this.state.array,temp_array, x, y))  	
-                  GG.Rule04(this.state.array,temp_array, x, y);	
+          if (this.state.array[x][y].id<=0 && this.state.array[x][y].id!=-1) {	
+            if(this.state.array[x][y].id==0)
+            {
+              if (!GG.Rule01(this.state.array,temp_array, x, y)) 	
+                if (!GG.Rule02(this.state.array,temp_array, x, y))  	
+                  if (!GG.Rule03(this.state.array,temp_array, x, y))  	
+                    GG.Rule04(this.state.array,temp_array, x, y);	
+            }
+            else
+            {
+              if(this.state.array[x][y].id==-2)
+              {
+                slow_fast = 0.5;
+                if (!GG.Rule01(this.state.array,temp_array, x, y)) 	
+                if (!GG.Rule02(this.state.array,temp_array, x, y))  	
+                  if (!GG.Rule03(this.state.array,temp_array, x, y))  	
+                    GG.Rule04(this.state.array,temp_array, x, y);
+                slow_fast = null;
+              }
+              if(this.state.array[x][y].id==-3)
+              {
+                slow_fast = -0.5;
+                if (!GG.Rule01(this.state.array,temp_array, x, y)) 	
+                if (!GG.Rule02(this.state.array,temp_array, x, y))  	
+                  if (!GG.Rule03(this.state.array,temp_array, x, y))  	
+                    GG.Rule04(this.state.array,temp_array, x, y);
+                slow_fast = null;
+              }
+            }
           }	
         }	
       }
@@ -183,8 +207,8 @@ class GameManager extends React.Component{
   Change(input)
   {
     timer_scale = input * 1000;
-    /*clearInterval(interval);
-    this.SetInterval();*/
+    clearInterval(interval);
+    this.SetInterval();
   }
 
   onClick_Grid(x, y) 
