@@ -38,10 +38,10 @@ function Square(props) {
     props.onClick_Grid(props.x, props.y);
  
   }
-
   return(
+    
     <div className="square" key={props.x+"|"+props.y}
-     style={{backgroundColor : props.fraction.color}} onMouseEnter={Send} onMouseUp={OmMoseDown} onMouseDown={OmMoseDown}></div>
+     style={ props.grid == true ? { border: "1px solid #373737ff", backgroundColor : props.fraction.color} :{backgroundColor : props.fraction.color}} onMouseEnter={Send} onMouseUp={OmMoseDown} onMouseDown={OmMoseDown}></div>
   )
 }
 
@@ -89,7 +89,7 @@ class GameManager extends React.Component{
     this.Update = this.Update.bind(this);
     this.onPallete = this.onPallete.bind(this);
     this.Reset = this.Reset.bind(this);
-
+    this.ChangeGrid = this.ChangeGrid.bind(this);
     this.ChangeBrush = this.ChangeBrush.bind(this);
     this.onGenerate = this.onGenerate.bind(this);
     
@@ -242,6 +242,7 @@ class GameManager extends React.Component{
 
   ChangeGrid()	
   {	
+    console.log("grid");
     this.setState({grid: !this.state.grid,});	
   }
 
@@ -258,7 +259,7 @@ class GameManager extends React.Component{
               return(
                 <div key={index} style={{gridTemplateRows: 'repeat('+size_y+', 1fr)'}}>
                   {items.map((subItem, sIndex)=>{
-                    return <Square onClick_Grid={this.onClick_Grid} x={index} y={sIndex} fraction={subItem} grid={this.state.grid}/>;
+                    return <Square grid={this.state.grid} onClick_Grid={this.onClick_Grid} x={index} y={sIndex} fraction={subItem} grid={this.state.grid}/>;
                   })}
                 </div>
                 
@@ -309,12 +310,14 @@ function Timer(params)
   
   return(
     <div id='timer'>
-      <button className='showbutton_timer' onClick={toggle}>{'^'}</button>
-      <button id='reset' onClick={Reset}><img height="20px" width="20px" src={reset_img}/></button>
-      <button id='on' className='show' onClick={Start}><img height="20px" width="20px" src={play_img}/></button>
-      <button id='off' onClick={Pause}><img height="20px" width="20px" src={pause_img}/></button>
-      <input onChange={Change} type="range" min="0.1" max="5" step="0.1" defaultValue="1" className="slider" id="myRange"></input>
-      <input id="speed_display" value={timer_scale/1000} type="text" readOnly></input>
+      <div className='time_container'>
+        <button className='showbutton_timer' onClick={toggle}><i class="fas fa-clock"></i></button>
+        <button id='reset' className='reset_button' onClick={Reset}><i class="fas fa-power-off"></i></button>
+        <button id='on' className='show on_button' onClick={Start}><i class="fas fa-play"></i></button>
+        <button id='off' className="off_button" onClick={Pause}><i class="fas fa-pause"></i></button>
+        <input onChange={Change} type="range" min="0.1" max="5" step="0.1" defaultValue="1" className="slider" id="myRange"></input>
+        <input id="speed_display" value={timer_scale/1000} type="text" readOnly></input>
+      </div>
     </div>
   );
 }

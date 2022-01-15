@@ -9,6 +9,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #373737ff;
 }
 
 code {
@@ -29,12 +30,11 @@ code {
   width: 100vw;
 }
 
-#board {	
-  display: grid;	
-  width: 90vw;	
-  height: 90vh;	
-  align-items: center;	
-  border: black 5px solid;	
+#board {
+  display: grid;
+  width: 90vw;
+  height: 90vh;
+  align-items: center;
 }
 
 #board > div {
@@ -60,7 +60,7 @@ button {
 
 #pallete {
   position: absolute;
-  width: 15vw;
+  width: 200px;
   height: 70vh;
   top: 2.5vh;
   transform: translateX(-100%);
@@ -79,36 +79,163 @@ button {
   top: 5vh;
   right: 0;
   transform: translateX(100%);
-  background-color: #4cc9f0;
+  background-color: #262626;
   transition: 0.5s transform ease-in-out;
   cursor: pointer;
-  border-end-end-radius: 10px;
-  border-start-end-radius: 10px;
+  color: white;
+  font-size: 2.5em;
+  width: 50px;
+}
+
+.showbutton_pallete:hover {
+  color: #b7d0f1ff;
+}
+
+.showbutton_pallete:active {
+  color: #faa549ff;
 }
 
 .pallete_container {
   width: 100%;
   height: 100%;
   display: grid;
+
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: repeat(6, 10vh);
+  grid-template-rows: repeat(6, 1fr);
   z-index: 10;
   position: relative;
-  border-end-end-radius: 15px;
-  border-start-end-radius: 15px;
-  background-color: #4361ee;
+  background-color: #141414ff;
 }
 
-.pallete_button {
+.frac_button,
+.barrier_button,
+.slow_button,
+.speed_button,
+.eraser_button,
+.brush_button,
+.brush_display,
+.eraser_button,
+.world_generator_button,
+.chance_button,
+.grid_button {
+  background-color: rgba(255, 255, 255, 0) !important;
+  color: white;
+  font-size: 2.5em;
+  width: 50px;
+  justify-self: center;
+  align-self: center;
+}
+
+.barrier_button:hover,
+.eraser_button:hover,
+.brush_button:hover,
+.eraser_button:hover,
+.world_generator_button:hover,
+.chance_button:hover {
+  color: #b7d0f1ff;
+}
+
+.barrier_button:active,
+.slow_button:active,
+.speed_button:active,
+.eraser_button:active,
+.brush_button:active,
+.eraser_button:active,
+.world_generator_button:active,
+.chance_button:active {
+  color: #faa549ff;
+}
+
+.grid_button {
+  color: #f2564fff;
+}
+
+.grid_button.activated {
+  color: #27ae60;
+}
+
+.world_generator {
+  grid-column: span 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.slow_button:hover {
+  color: #3498db;
+}
+.speed_button:hover {
+  color: #e67e22;
+}
+
+.slow_button:active {
+  color: #faa549ff;
+}
+.speed_button:active {
+  color: #faa549ff;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.world_gen_input,
+#chance_input {
   background-color: rgba(255, 255, 255, 0);
-  margin: 15px 20px 15px 20px;
+  border: none;
+  border-bottom: white 1px solid;
+  color: white;
+  width: 70%;
+  margin: 5px;
+  margin-left: 20px;
+  outline: none;
+  font-size: 20px;
+}
+
+.generate_div,
+.chance_div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0) !important;
+  color: white;
+  font-size: 2.5em;
+  width: 100px;
+  height: 100%;
+  align-self: center;
+}
+
+.brush_display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fa-highlighter {
+  color: #b7d0f1ff;
+}
+
+.fa-paint-roller {
+  color: #faa549ff;
+}
+
+.fa-brush {
+  color: #f2564fff;
 }
 
 #colorPicker {
   position: absolute;
   width: 40px;
   height: 40vh;
-  top: 20vh;
+  top: 25vh;
   right: 0;
   transition: 0.5s transform ease-in-out;
   display: grid;
@@ -128,10 +255,12 @@ button {
 }
 
 #timer {
+  position: relative;
+  z-index: 10;
   position: absolute;
-  display: flex;	
-  align-items: center;	
-  justify-content: center;	
+  display: flex;
+  align-items: center;
+  justify-content: center;
   gap: 20px;
   width: 20vw;
   height: 12vh;
@@ -139,8 +268,11 @@ button {
   transform: translateY(-100%);
   background-color: #560bad;
   transition: 0.5s transform ease-in-out;
-  border-end-start-radius: 15px;
-  border-end-end-radius: 15px;
+}
+
+.time_container {
+  width: 100%;
+  height: 100%;
 }
 
 #timer.show {
@@ -148,17 +280,17 @@ button {
 }
 
 .showbutton_timer {
+  z-index: 1;
+  width: 50px;
+  background-color: #262626;
+  color: white;
+  font-size: 2.5em;
+  width: 50px;
   position: absolute;
-  width: 5vw;
   height: 20px;
   bottom: 0;
   left: 30px;
-  transform: translateY(100%);
-  background-color: #f72585;
-  transition: 0.5s transform ease-in-out;
-  cursor: pointer;
-  border-end-start-radius: 10px;
-  border-end-end-radius: 10px;
+  font-size: 2.5em;
 }
 
 #on {
@@ -184,10 +316,6 @@ button {
   float: left;
 }
 
-.square {
-  border: 1px solid #000;
-}
-
 #speed_display {
   border-radius: 10px;
   width: 30px;
@@ -196,4 +324,59 @@ button {
 
 footer {
   font-size: small;
+}
+
+#SlowPick {
+  position: absolute;
+  width: 100px;
+  height: 30px;
+  top: 13vh;
+  right: 0;
+  transition: 0.5s transform ease-in-out;
+  background-color: #262626;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#FastPick {
+  position: absolute;
+  width: 100px;
+  height: 30px;
+  top: 17vh;
+  right: 0;
+  transition: 0.5s transform ease-in-out;
+  background-color: #262626;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#SlowPick > input,
+#FastPick > input {
+  height: auto;
+  width: 90px;
+  margin: 5px;
+  background-color: rgba(255, 255, 255, 0);
+  border: none;
+  border-bottom: white 1px solid;
+  color: white;
+  width: 90%;
+  margin: 5px;
+  outline: none;
+  font-size: 20px;
+}
+
+#SlowPick.show,
+#FastPick.show {
+  transform: translateX(100%);
+}
+
+.reset_button,
+.on_button,
+.off_button {
+  background-color: rgba(255, 255, 255, 0) !important;
+  color: white;
+  font-size: 2.5em;
+  width: 50px;
 }
