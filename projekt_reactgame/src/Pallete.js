@@ -6,6 +6,9 @@ import slow_img from './images/slow.svg';
 import speed_img from './images/speed.svg';
 import brush_img from './images/brush.svg';
 import eraser_img from './images/eraser.svg';
+import percent_img from './images/percent.svg';
+import generate_img from './images/generate.svg';
+import grid_img from './images/grid.svg';
 export let GlobalRandom = 50;
 export function Pallete(params) {
 
@@ -63,28 +66,28 @@ export function Pallete(params) {
         <button className='showbutton_pallete' onClick={() => toggle('pallete')}>{'>'}</button>
         
         <div className='pallete_container'>
-          <button style={{backgroundColor : color}} className='pallete_button' onClick={()=> {toggle('colorPicker')}}><img src={flag_img} height="30px" width="30px"/></button>
-          <button onClick={()=>params.onPallete(Fr.fr_black)} className='pallete_button'><img src={mountain_img} height="30px" width="30px"/></button>
-          <button onClick={()=>params.onPallete(Fr.fr_slow)} className='pallete_button'><img src={slow_img} height="30px" width="30px"/></button>
-          <button onClick={()=>params.onPallete(Fr.fr_fast)} className='pallete_button'><img src={speed_img} height="30px" width="30px"/></button>
-          <button onClick={ChangeBrush} className='pallete_button'><img src={brush_img} height="30px" width="30px"/></button>
+          <button style={{backgroundColor : color}} className='pallete_button' onClick={()=> {toggle('colorPicker')}}><img src={flag_img} height="40px" width="40px"/></button>
+          <button onClick={()=>params.onPallete(Fr.fr_black)} className='pallete_button'><img src={mountain_img} height="40px" width="40px"/></button>
+          <button onClick={()=>params.onPallete(Fr.fr_slow)} className='pallete_button'><img src={slow_img} height="40px" width="40px"/></button>
+          <button onClick={()=>params.onPallete(Fr.fr_fast)} className='pallete_button'><img src={speed_img} height="40px" width="40px"/></button>
+          <button onClick={ChangeBrush} className='pallete_button'><img src={brush_img} height="40px" width="40px"/></button>
           <div>{(brush==0)?"S":(brush==1)?"M":"H"}</div>
-          <button onClick={()=>params.onPallete(Fr.fr_blank)} className='pallete_button'><img src={eraser_img} height="30px" width="30px"/></button>
+          <button onClick={()=>params.onPallete(Fr.fr_blank)} className='pallete_button'><img src={eraser_img} height="40px" width="40px"/></button>
           <div></div>
           <div>
             <input id='input_x' min={1} type={Number} ></input>
             <input id='input_y' min={1} type={Number} ></input>
           </div>
-          <button onClick={OnGenerate} className='pallete_button'>Generate</button>
+          <button onClick={OnGenerate} className='pallete_button'><img src={generate_img} height="40px" width="40px"/></button>
           <div>
             <input id='chance_input' min={0} max={100} type={Number}></input>
           </div>
-          <button onClick={OnChanceChange} className='pallete_button'>%</button>
+          <button onClick={OnChanceChange} className='pallete_button'><img src={percent_img} height="40px" width="40px"/></button>
           <div>
           <input></input>
           </div>
           <button onClick={()=>params.onPallete(Fr.fr_blank)} className='pallete_button'>F</button>
-          <button onClick={()=>params.onPallete(Fr.fr_blank)} className='pallete_button'>#</button>
+          <button onClick={()=>params.onPallete(Fr.fr_blank)} className='pallete_button'><img src={grid_img} height="40px" width="40px"/></button>
           <button onClick={()=>params.onPallete(Fr.fr_blank)} className='pallete_button'>I</button>
         </div>
         <ColorPicker colorUpdate={ColorUpdate} />
