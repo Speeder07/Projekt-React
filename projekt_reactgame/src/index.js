@@ -92,7 +92,8 @@ class GameManager extends React.Component{
     this.ChangeGrid = this.ChangeGrid.bind(this);
     this.ChangeBrush = this.ChangeBrush.bind(this);
     this.onGenerate = this.onGenerate.bind(this);
-    
+    this.Change = this.Change.bind(this);
+
     this.brushM = [
       [false, true, false],
       [true, true, true],
@@ -121,6 +122,7 @@ class GameManager extends React.Component{
             
           if (this.state.array[x][y]===undefined) 	
             continue;	
+            
           if (this.state.array[x][y].id<=0 && this.state.array[x][y].id!=-1) {	
             if(this.state.array[x][y].id==0)
             {
@@ -129,27 +131,6 @@ class GameManager extends React.Component{
                   if (!GG.Rule03(this.state.array,temp_array, x, y))  	
                     GG.Rule04(this.state.array,temp_array, x, y);	
             }
-            else
-            {
-              if(this.state.array[x][y].id==-2)
-              {
-                slow_fast = 0.5;
-                if (!GG.Rule01(this.state.array,temp_array, x, y)) 	
-                if (!GG.Rule02(this.state.array,temp_array, x, y))  	
-                  if (!GG.Rule03(this.state.array,temp_array, x, y))  	
-                    GG.Rule04(this.state.array,temp_array, x, y);
-                slow_fast = null;
-              }
-              if(this.state.array[x][y].id==-3)
-              {
-                slow_fast = -0.5;
-                if (!GG.Rule01(this.state.array,temp_array, x, y)) 	
-                if (!GG.Rule02(this.state.array,temp_array, x, y))  	
-                  if (!GG.Rule03(this.state.array,temp_array, x, y))  	
-                    GG.Rule04(this.state.array,temp_array, x, y);
-                slow_fast = null;
-              }
-            }
           }	
         }	
       }
@@ -157,20 +138,14 @@ class GameManager extends React.Component{
     }
   }
 
-  componentDidMount() 
-  {
-    this.SetInterval();
-  }
 
   onGenerate(nx, ny)	
   {	
     	
-    clearInterval(interval);	
     size_x=nx;	
     size_y=ny;	
     const arr = makeArray(nx, size_y);	
     this.setState({array : arr,});	
-    this.SetInterval();	
     	
   }	
 
@@ -300,6 +275,7 @@ class GameManager extends React.Component{
 
 function Timer(params) 
 {
+  const [time_scale, set_time_scale] = useState(()=>{return 1000});
   let pause = true;
   let slide = 1;
   
@@ -329,13 +305,15 @@ function Timer(params)
 
   function Change(event)
   {
+    set_time_scale(event.target.value);
     params.onChange(event.target.value);
   }
   
   return(
     <div id='timer'>
+      <button className='showbutton_timer' onClick={toggle}><i class="fas fa-clock"></i></button>
       <div className='time_container'>
-        <button className='showbutton_timer' onClick={toggle}><i class="fas fa-clock"></i></button>
+        
         <button id='reset' className='reset_button' onClick={Reset}><i class="fas fa-power-off"></i></button>
         <button id='on' className='show on_button' onClick={Start}><i class="fas fa-play"></i></button>
         <button id='off' className="off_button" onClick={Pause}><i class="fas fa-pause"></i></button>

@@ -58,11 +58,13 @@ export function Pallete(params) {
 
     function OnFast(value) {
       value = (value<1)?1:(value>100)?100:value;
+      console.log("f"+value);
       fast_chance = value;
     }
 
     function OnSlow(value) {
       value = (value<1)?1:(value>100)?100:value;
+      console.log("s"+value);
       slow_chance = value;
     }
     
