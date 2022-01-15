@@ -7,9 +7,6 @@ import Grain from './GrainGrow.js';
 import * as Fr from './Fractions';
 import * as GG from './GrainGrow';
 import * as Pl from './Pallete';
-import play_img from './images/play.svg';
-import pause_img from './images/pause.svg';
-import reset_img from './images/reset.svg';
 export let slow_fast = null;
 
 let timer_scale = 1000;
