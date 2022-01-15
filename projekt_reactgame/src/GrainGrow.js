@@ -189,17 +189,22 @@ export function Rule04(array, temp_array, sx, sy) {
             max = element;
           }
         }
-        if(sf.slow_fast!=null)
-        {
-          if (Math.floor(Math.random() * 101) <= (Ix.GlobalRandom+(Ix.GlobalRandom*sf.slow_fast))) {
-            temp_array[sx][sy] = max.fraction;
-          }
+        let random_temp;
+        console.log(random_temp);
+        switch (array[sx][sy].id) {
+          case -3:
+            random_temp = Ix.slow_chance;
+            console.log(random_temp);
+            break;
+          case -2:
+            random_temp = Ix.fast_chance;
+            break;
+          default:
+            random_temp = Ix.GlobalRandom;
+            break;
         }
-        else
-        {
-          if (Math.floor(Math.random() * 101) <= Ix.GlobalRandom) {
+        if (Math.floor(Math.random() * 101) <= random_temp) {
             temp_array[sx][sy] = max.fraction;
-          }
         }
     }
 }

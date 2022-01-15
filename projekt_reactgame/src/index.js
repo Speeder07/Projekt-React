@@ -22,7 +22,8 @@ function Square(props) {
   
   
   function OmMoseDown(e) {
-    
+    e.preventDefault();
+
     if (e.type === "mousedown") {
       ismousedown = true;
     }
@@ -109,6 +110,10 @@ class GameManager extends React.Component{
     ];
   }
 
+  componentDidMount(){
+    this.SetInterval();
+  }
+
 
   Update() {
     let temp_array =JSON.parse(JSON.stringify(this.state.array));
@@ -122,9 +127,8 @@ class GameManager extends React.Component{
             
           if (this.state.array[x][y]===undefined) 	
             continue;	
-            
-          if (this.state.array[x][y].id<=0 && this.state.array[x][y].id!=-1) {	
-            if(this.state.array[x][y].id==0)
+
+          if (this.state.array[x][y].id!=-1) {	
             {
               if (!GG.Rule01(this.state.array,temp_array, x, y)) 	
                 if (!GG.Rule02(this.state.array,temp_array, x, y))  	
@@ -137,7 +141,7 @@ class GameManager extends React.Component{
       this.setState({array : temp_array,});
     }
   }
-
+  
 
   onGenerate(nx, ny)	
   {	
@@ -311,12 +315,12 @@ function Timer(params)
   
   return(
     <div id='timer'>
-      <button className='showbutton_timer' onClick={toggle}><i class="fas fa-clock"></i></button>
+      <button className='showbutton_timer' onClick={toggle}><i className="fas fa-clock"></i></button>
       <div className='time_container'>
         
-        <button id='reset' className='reset_button' onClick={Reset}><i class="fas fa-power-off"></i></button>
-        <button id='on' className='show on_button' onClick={Start}><i class="fas fa-play"></i></button>
-        <button id='off' className="off_button" onClick={Pause}><i class="fas fa-pause"></i></button>
+        <button id='reset' className='reset_button' onClick={Reset}><i className="fas fa-power-off"></i></button>
+        <button id='on' className='show on_button' onClick={Start}><i className="fas fa-play"></i></button>
+        <button id='off' className="off_button" onClick={Pause}><i className="fas fa-pause"></i></button>
         <input onChange={Change} type="range" min="0.1" max="5" step="0.1" defaultValue="1" className="slider" id="myRange"></input>
         <input id="speed_display" value={timer_scale/1000} type="text" readOnly></input>
       </div>

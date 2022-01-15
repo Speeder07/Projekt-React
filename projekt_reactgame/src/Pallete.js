@@ -73,28 +73,28 @@ export function Pallete(params) {
     
     return(
       <div id='pallete'>
-        <button className='showbutton_pallete' onClick={() => toggle('pallete')}><i class="fas fa-palette"></i></button>
+        <button className='showbutton_pallete' onClick={() => toggle('pallete')}><i className="fas fa-palette"></i></button>
         
         <div className='pallete_container'>
-          <button style={{color : color}} className='frac_button' onClick={()=> {toggle('colorPicker'); params.onPallete(Fract_first);}}><i class="fas fa-flag"></i></button>
-          <button onClick={()=>params.onPallete(Fr.fr_black)} className='barrier_button'><i class="fas fa-shield-alt"></i></button>
-          <button onClick={()=>{params.onPallete(Fr.fr_slow); toggle('SlowPick')}} className='slow_button'><i class="fas fa-angle-double-left"></i></button>
-          <button onClick={()=>{params.onPallete(Fr.fr_fast); toggle('FastPick')}} className='speed_button'><i class="fas fa-angle-double-right"></i></button>
-          <button onClick={ChangeBrush} className='brush_button'><i class="fas fa-paint-brush"></i></button>
-          <div className='brush_display'>{(brush==0)?<i class="fas fa-highlighter"></i>:(brush==1)?<i class="fas fa-paint-roller"></i>:<i class="fas fa-brush"></i>}</div>
-          <button onClick={()=>params.onPallete(Fr.fr_blank)} className='eraser_button'><i class="fas fa-eraser"></i></button>
-          <button id='grid_button' onClick={OnGrid} className='grid_button'><i class="fas fa-border-all"></i></button>
+          <button style={{color : color}} className='frac_button' onClick={()=> {toggle('colorPicker'); params.onPallete(Fract_first);}}><i className="fas fa-flag"></i></button>
+          <button onClick={()=>params.onPallete(Fr.fr_black)} className='barrier_button'><i className="fas fa-shield-alt"></i></button>
+          <button onClick={()=>{params.onPallete(Fr.fr_slow); toggle('SlowPick')}} className='slow_button'><i className="fas fa-angle-double-left"></i></button>
+          <button onClick={()=>{params.onPallete(Fr.fr_fast); toggle('FastPick')}} className='speed_button'><i className="fas fa-angle-double-right"></i></button>
+          <button onClick={ChangeBrush} className='brush_button'><i className="fas fa-paint-brush"></i></button>
+          <div className='brush_display'>{(brush==0)?<i className="fas fa-highlighter"></i>:(brush==1)?<i className="fas fa-paint-roller"></i>:<i className="fas fa-brush"></i>}</div>
+          <button onClick={()=>params.onPallete(Fr.fr_blank)} className='eraser_button'><i className="fas fa-eraser"></i></button>
+          <button id='grid_button' onClick={OnGrid} className='grid_button'><i className="fas fa-border-all"></i></button>
           <form className='world_generator' onSubmit={OnGenerate}>
             <div className='generate_div'>
               <input className='world_gen_input' id='input_x' min="1" type="Number" placeholder='X'></input>
               <input className='world_gen_input' id='input_y' min="1" type="Number" placeholder='Y'></input>
             </div>
-            <button type='submit' className='world_generator_button'><i class="fas fa-globe-europe"></i></button>
+            <button type='submit' className='world_generator_button'><i className="fas fa-globe-europe"></i></button>
           </form>
           <div className='chance_div'>
             <input id='chance_input' min={0} max={100} type={Number} placeholder='%'></input>
           </div>
-          <button onClick={OnChanceChange} className='chance_button'><i class="fas fa-percent"></i></button>
+          <button onClick={OnChanceChange} className='chance_button'><i className="fas fa-percent"></i></button>
 
         </div>
         <ColorPicker colorUpdate={ColorUpdate} />
