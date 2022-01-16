@@ -14,6 +14,8 @@ let ismousedown = false;
 let size_x = 20, size_y = 20;
 let interval;	
 let paused = true;
+let revert = [];
+let list = "Tu pojawia się lista ruchów";
 
 function Square(props) {
   
@@ -46,6 +48,10 @@ function Square(props) {
 function AlterTable(arr, x, y, content) {
   arr[x][y] = content;
   return arr;
+}
+
+function revertState(i) {
+  GameManager.state.array = revert[i];
 }
 
 function makeArray() {	
@@ -130,7 +136,15 @@ class GameManager extends React.Component{
               if (!GG.Rule01(this.state.array,temp_array, x, y)) 	
                 if (!GG.Rule02(this.state.array,temp_array, x, y))  	
                   if (!GG.Rule03(this.state.array,temp_array, x, y))  	
-                    GG.Rule04(this.state.array,temp_array, x, y);	
+                    GG.Rule04(this.state.array,temp_array, x, y);
+              
+              revert.push(this.state.array);
+              list = "<ul>";
+              for(let i=0; i<revert.length; i++)
+              {
+                list += "<li><button onClick={revertState("+i+")}>"+i+"</button></li>";
+              }
+              list += "</ul>";
             }
           }	
         }	
@@ -252,6 +266,7 @@ class GameManager extends React.Component{
       <div>
         <Pl.Pallete onPallete = {this.onPallete} onChangeBrush={this.ChangeBrush} onGenerate={this.onGenerate} onGrid={this.ChangeGrid}/>
         <Timer onChange={this.Change} onStart={this.Start} onReset={this.Reset} onPause={this.Pause}/>
+        <Revert/>
       
         <div className='position'>
           <div id="board" onMouseLeave={()=>ismousedown=false} style={{gridTemplateColumns: 'repeat('+size_x+', 1fr'}}>
@@ -273,6 +288,12 @@ class GameManager extends React.Component{
   }
 }
 
+function Revert()
+{
+  return(
+    <div dangerouslySetInnerHTML={{__html: list}} id="revert"></div>
+  );
+}
 
 function Timer(params) 
 {
