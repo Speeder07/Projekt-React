@@ -14,8 +14,6 @@ let ismousedown = false;
 let size_x = 20, size_y = 20;
 let interval;	
 let paused = true;
-let revert = [];
-let list = "Tu pojawia się lista ruchów";
 
 function Square(props) {
   
@@ -50,9 +48,6 @@ function AlterTable(arr, x, y, content) {
   return arr;
 }
 
-function revertState(i) {
-  GameManager.state.array = revert[i];
-}
 
 function makeArray() {	
   var arr = new Array(size_x);	
@@ -69,8 +64,9 @@ function makeArray() {
   return arr	
 }
 
-function IsFieldExist(arr, x, y) {
-  return arr[x][y] !== undefined;
+function AddValue(arr, content) {
+  arr.push(content);
+  return arr;
 }
 
 
@@ -86,7 +82,8 @@ class GameManager extends React.Component{
       array : arr,
       Selected_Fraction : null,
       brush : 0,	
-      grid : false
+      grid : false,
+      history : []
     }
 
     this.onClick_Grid = this.onClick_Grid.bind(this);
@@ -97,6 +94,7 @@ class GameManager extends React.Component{
     this.ChangeBrush = this.ChangeBrush.bind(this);
     this.onGenerate = this.onGenerate.bind(this);
     this.Change = this.Change.bind(this);
+    this.CangeHistory = this.CangeHistory.bind(this);
 
     this.brushM = [
       [false, true, false],
@@ -144,12 +142,9 @@ class GameManager extends React.Component{
         }	
       }
       this.setState({array : temp_array,});
-      revert.push(this.state.array);
-      list="";
-              for(let i=0; i<revert.length; i++)
-              {
-                list += '<div><button onClick={revertState('+i+')}><i class="fas fa-save"></i> Save#'+i+'</button></div>';
-              }
+      let hisT = AddValue(this.state.history, this.state.array);
+      this.setState({history : hisT,});	
+      
     }
   }
   
@@ -161,6 +156,8 @@ class GameManager extends React.Component{
     size_y=ny;	
     const arr = makeArray(nx, size_y);	
     this.setState({array : arr,});	
+    let hisT = AddValue(this.state.history, this.state.array);
+    this.setState({history : hisT,});	
     	
   }	
 
@@ -180,6 +177,8 @@ class GameManager extends React.Component{
   {
     const arr = makeArray(size_x, size_y);
     this.setState({array : arr,});
+    let hisT = AddValue(this.state.history, this.state.array);
+    this.setState({history : hisT,});	
   }
 
   Start()
@@ -245,6 +244,8 @@ class GameManager extends React.Component{
         
 
         this.setState({array : temp,});
+        let hisT = AddValue(this.state.history, temp);
+        this.setState({history : hisT,});	
       }
     }
   }
@@ -256,8 +257,14 @@ class GameManager extends React.Component{
 
   ChangeGrid()	
   {	
-    console.log("grid");
+    
     this.setState({grid: !this.state.grid,});	
+  }
+
+  CangeHistory(index)
+  {
+    
+    this.setState({array: this.state.history[index],})
   }
 
   render() 
@@ -266,7 +273,7 @@ class GameManager extends React.Component{
       <div>
         <Pl.Pallete onPallete = {this.onPallete} onChangeBrush={this.ChangeBrush} onGenerate={this.onGenerate} onGrid={this.ChangeGrid}/>
         <Timer onChange={this.Change} onStart={this.Start} onReset={this.Reset} onPause={this.Pause}/>
-        <Revert/>
+        <Revert history={this.state.history} CangeHistory={this.CangeHistory}/>
       
         <div className='position'>
           <div id="board" onMouseLeave={()=>ismousedown=false} style={{gridTemplateColumns: 'repeat('+size_x+', 1fr'}}>
@@ -282,15 +289,13 @@ class GameManager extends React.Component{
             })}
           </div>
         </div>
-        <footer>Użyte ikony są ze strony Font Awesome, licencja: https://fontawesome.com/license</footer>
       </div>
     );
   }
 }
 
-function Revert()
+function Revert(param)
 {
-  const [time_scale, set_time_scale] = useState(()=>{return 1000});
   let pause = true;
   let slide = 1;
   
@@ -298,13 +303,27 @@ function Revert()
     document.getElementById('revert').classList.toggle('show');
   }
 
+  function OnClick(value) {
+    console.log(value);
+    param.CangeHistory(value);
+  }
+
   return(
     <div  id="revert">
-      <button className='showbutton_revert' onClick={toggle}><i class="fas fa-clipboard-list"></i></button>
-      <div className='revert_container' dangerouslySetInnerHTML={{__html: list}}>
+      <button className='showbutton_revert' onClick={toggle}><i className="fas fa-clipboard-list"></i></button>
+      <div className='revert_container'>
+        {param.history.map((items, index)=>{
+          return(<RevertButton index={index} onClick={OnClick}></RevertButton>);
+          })}
       </div>
     </div>
   );
+}
+
+function RevertButton(params) {
+  return(
+    <div><button onClick={()=>{params.onClick(params.index)}}><i className="fas fa-save"></i> Save#{params.index}</button></div>
+  )
 }
 
 function Timer(params) 
