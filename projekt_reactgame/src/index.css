@@ -412,3 +412,12 @@ footer {
   background: #f2564fff;
   cursor: pointer;
 }
+
+#revert {
+  position: absolute;
+  right: 0;
+  width: 100px;
+  height: 50vh;
+  top: 20vh;
+  background-color: #141414ff;
+}
