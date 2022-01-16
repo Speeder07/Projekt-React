@@ -138,18 +138,18 @@ class GameManager extends React.Component{
                   if (!GG.Rule03(this.state.array,temp_array, x, y))  	
                     GG.Rule04(this.state.array,temp_array, x, y);
               
-              revert.push(this.state.array);
-              list = "<ul>";
-              for(let i=0; i<revert.length; i++)
-              {
-                list += "<li><button onClick={revertState("+i+")}>"+i+"</button></li>";
-              }
-              list += "</ul>";
+              
             }
           }	
         }	
       }
       this.setState({array : temp_array,});
+      revert.push(this.state.array);
+      list="";
+              for(let i=0; i<revert.length; i++)
+              {
+                list += '<div><button onClick={revertState('+i+')}><i class="fas fa-save"></i> Save#'+i+'</button></div>';
+              }
     }
   }
   
@@ -290,8 +290,20 @@ class GameManager extends React.Component{
 
 function Revert()
 {
+  const [time_scale, set_time_scale] = useState(()=>{return 1000});
+  let pause = true;
+  let slide = 1;
+  
+  function toggle() {
+    document.getElementById('revert').classList.toggle('show');
+  }
+
   return(
-    <div dangerouslySetInnerHTML={{__html: list}} id="revert"></div>
+    <div  id="revert">
+      <button className='showbutton_revert' onClick={toggle}><i class="fas fa-clipboard-list"></i></button>
+      <div className='revert_container' dangerouslySetInnerHTML={{__html: list}}>
+      </div>
+    </div>
   );
 }
 
