@@ -125,7 +125,7 @@ class GameManager extends React.Component{
           if (this.state.array[x][y]===undefined) 	
             continue;	
 
-          if (this.state.array[x][y].id!=-1) {	
+          if (this.state.array[x][y].id!=-1 && this.state.array[x][y].id<=0) {	
             {
               if (!GG.Rule01(this.state.array,temp_array, x, y)) 	
                 if (!GG.Rule02(this.state.array,temp_array, x, y))  	
