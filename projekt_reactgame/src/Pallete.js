@@ -113,6 +113,9 @@ function ColorPicker(params) {
         <button onClick={()=> params.colorUpdate(Fr.fr_four)} style={{backgroundColor: Fr.fr_four.color}}></button>
         <button onClick={()=> params.colorUpdate(Fr.fr_five)} style={{backgroundColor: Fr.fr_five.color}}></button>
         <button onClick={()=> params.colorUpdate(Fr.fr_six)} style={{backgroundColor: Fr.fr_six.color}}></button>
+        <button onClick={()=> params.colorUpdate(Fr.fr_seven)} style={{backgroundColor: Fr.fr_seven.color}}></button>
+        <button onClick={()=> params.colorUpdate(Fr.fr_eight)} style={{backgroundColor: Fr.fr_eight.color}}></button>
+        <button onClick={()=> params.colorUpdate(Fr.fr_nine)} style={{backgroundColor: Fr.fr_nine.color}}></button>
       </div>
     );
 }
